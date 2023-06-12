@@ -24,7 +24,6 @@ def clear():
     screen.reset()
 
 
-
 screen.listen()
 screen.onkey(key="w", fun=move_forwards)
 screen.onkey(key="s", fun=move_backwards)
