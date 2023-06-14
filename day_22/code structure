@@ -1,0 +1,10 @@
+Classes that will be needed:
+    "player"
+        method move up/down
+    score board
+        display score,
+        display game over
+    ball
+        will have method called bounc
+    board
+        will be drawing doted lines
