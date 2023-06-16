@@ -18,6 +18,12 @@ class Snake:
         snake_square.goto(position)
         self.squares.append(snake_square)
 
+    def reset(self):
+        for square in self.squares:
+            square.goto(1000,1000)
+        self.squares.clear()
+        self.create_snake()
+
     def extend(self):
         self.add_square(self.squares[-1].position())
     def move(self):

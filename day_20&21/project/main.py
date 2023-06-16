@@ -20,7 +20,6 @@ screen.onkey(key="Down", fun=snake.down)
 screen.onkey(key="Right", fun=snake.right)
 screen.onkey(key="Left", fun=snake.left)
 
-
 game_running = True
 while game_running:
     scoreboard.show()
@@ -35,19 +34,15 @@ while game_running:
         snake.extend()
 
     # detect collision with wall
-    if snake.squares[0].xcor() > 285 or snake.squares[0].xcor() < -285 or\
-        snake.squares[0].ycor() > 285 or snake.squares[0].ycor() < -285:
-        game_running = False
-        scoreboard.game_over()
+    if snake.squares[0].xcor() > 285 or snake.squares[0].xcor() < -285 or \
+            snake.squares[0].ycor() > 285 or snake.squares[0].ycor() < -285:
+        scoreboard.reset()
+        snake.reset()
 
     # detect collision with wall
     for square in snake.squares[1:]:
         if snake.squares[0].distance(square) < 10:
-            game_running = False
-            scoreboard.game_over()
+            scoreboard.reset()
+            snake.reset()
 
 screen.exitonclick()
-
-
-
-
