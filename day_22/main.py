@@ -2,7 +2,7 @@ import time
 from turtle import Screen
 from paddle import Paddle
 from ball import Ball
-from scoreboard import  Scoreboard
+from scoreboard import Scoreboard
 
 screen = Screen()
 screen.setup(width=600, height=600)
