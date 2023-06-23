@@ -25,9 +25,16 @@ alfabet_data = pandas.read_csv('nato_phonetic_alphabet.csv')
 
 alfabet = {row.letter: row.code for (index, row) in alfabet_data.iterrows()}
 
-word = input('Input your word: ')
 
-word_code = [alfabet[letter.upper()] for letter in word]
+def generate_phonetic():
+    word = input('Input your word: ')
+    try:
+        word_code = [alfabet[letter.upper()] for letter in word]
+    except KeyError:
+        print("Sorry, only letters in the alphabet pleas")
+        generate_phonetic()
+    else:
+        print(word_code)
 
-print(word_code)
 
+generate_phonetic()
