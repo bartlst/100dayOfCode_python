@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import random
 import pyperclip
+import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -35,9 +36,12 @@ def generate_password():
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
-
 def save_password():
 
+    new_data = {input_web_box.get(): {
+        "email": input_username_box.get(),
+        "password": input_pass_box.get()
+    }}
     if input_web_box.get() == "" or input_username_box.get() == "" or input_pass_box.get() == "":
         messagebox.showinfo("Oops", "Please don't leave any fields empty!")
     else:
@@ -47,11 +51,39 @@ def save_password():
                                                                   f"\n Password: {input_pass_box.get()} ")
 
         if if_save:
-            with open('secret_file.txt', mode="a") as file:
-                entry = f"{input_web_box.get()}\t | {input_username_box.get()}\t | {input_pass_box.get()} \n"
-                file.write(entry)
+            try:
+                with open('secret_file.json', mode="r") as file:
+                    data = json.load(file)
+                    data.update(new_data)
+
+            except FileNotFoundError:
+                with open('secret_file.json', mode="w") as file:
+                    json.dump(new_data, file, indent=4)
+
+            else:
+                with open('secret_file.json', mode="w") as file:
+                    json.dump(data, file, indent=4)
+
+            finally:
                 input_pass_box.delete(0, END)
                 input_web_box.delete(0, END)
+
+
+# ---------------------------- SAVE PASSWORD ------------------------------- #
+def search_password():
+    try:
+        with open('secret_file.json', mode="r") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        messagebox.showinfo("Error", "File not exist")
+    else:
+        try:
+            password = data[input_web_box.get()]["password"]
+            email = data[input_web_box.get()]["email"]
+        except KeyError:
+            messagebox.showinfo("Error", "Password for this website not exist")
+        else:
+            messagebox.showinfo(title=input_web_box.get(), message=f"\n E-mail: {email}\n Password: {password} ")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -81,8 +113,8 @@ password_label.grid(row=3, column=0)
 # input box
 
 input_web_box = Entry()
-input_web_box.config(width=50)
-input_web_box.grid(column=1, row=1, columnspan=2)
+input_web_box.config(width=32)
+input_web_box.grid(column=1, row=1)
 
 input_username_box = Entry()
 input_username_box.config(width=50)
@@ -101,6 +133,11 @@ add_button.grid(column=1, row=4, columnspan=2)
 
 generate_button = Button(text="Generate Password", command=generate_password)
 generate_button.grid(column=2, row=3)
+
+
+search_button = Button(text="Search", command=search_password)
+search_button.grid(column=2, row=1)
+search_button.config(width=14)
 
 window.mainloop()
 
